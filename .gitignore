@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Backend - lowercase
+backend/__pycache__/
+backend/venv/
+backend/.env
+backend/chroma_db/
+backend/uploaded_pdfs/
+backend/uploaded_papers/
+backend/paper_chunks.json
+
+# Backend - uppercase safety
+Backend/__pycache__/
+Backend/venv/
+Backend/.env
+Backend/chroma_db/
+Backend/uploaded_pdfs/
+Backend/uploaded_papers/
+Backend/paper_chunks.json
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# System
+.DS_Store
+Thumbs.db
