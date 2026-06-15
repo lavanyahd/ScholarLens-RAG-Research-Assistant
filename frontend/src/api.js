@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://scholarlens-rag-research-assistant.onrender.com";
+const API_BASE_URL = "https://lavanyahd-scholarlens-backend.hf.space";
 export const uploadPdf = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
