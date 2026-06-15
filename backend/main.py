@@ -271,3 +271,6 @@ def summarize_paper(request: SummaryRequest):
             status_code=500,
             detail=f"Error while generating summary: {str(e)}"
         )
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "message": "ScholarLens backend is running"}    

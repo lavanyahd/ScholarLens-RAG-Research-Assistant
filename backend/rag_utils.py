@@ -24,10 +24,22 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 # -----------------------------
 # Load multilingual embedding model
 # -----------------------------
-embedding_model = SentenceTransformer(
-    "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-)
+EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
+_embedding_model = None
+
+def get_embedding_model():
+    global _embedding_model
+
+    if _embedding_model is None:
+        print("Loading embedding model for the first time...")
+        _embedding_model = SentenceTransformer(
+            EMBEDDING_MODEL_NAME,
+            cache_folder="/tmp/sentence_transformers"
+        )
+        print("Embedding model loaded successfully.")
+
+    return _embedding_model
 
 # -----------------------------
 # ChromaDB setup
@@ -161,7 +173,7 @@ def store_chunks_in_chromadb(chunks: List[Dict[str, Any]]) -> int:
         for chunk in chunks
     ]
 
-    embeddings = embedding_model.encode(
+    embeddings = get_embedding_model().encode(
         documents,
         batch_size=32,
         show_progress_bar=True,
@@ -191,7 +203,7 @@ def search_similar_chunks(
     Search ChromaDB and return top relevant chunks for the question.
     """
     retrieval_question = expand_question_for_retrieval(question)
-    question_embedding = embedding_model.encode(
+    question_embedding = get_embedding_model().encode(
         retrieval_question,
         normalize_embeddings=True
     ).tolist()
