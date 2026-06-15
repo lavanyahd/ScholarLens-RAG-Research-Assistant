@@ -29,14 +29,26 @@ EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12
 _embedding_model = None
 
 def get_embedding_model():
+    """
+    Loads the SentenceTransformer model only when it is actually needed.
+
+    This prevents Render from getting stuck during startup because
+    the heavy ML model will not load when /health or /docs is opened.
+    """
     global _embedding_model
 
     if _embedding_model is None:
+        print("Importing SentenceTransformer only when needed...")
+
+        from sentence_transformers import SentenceTransformer
+
         print("Loading embedding model for the first time...")
+
         _embedding_model = SentenceTransformer(
             EMBEDDING_MODEL_NAME,
             cache_folder="/tmp/sentence_transformers"
         )
+
         print("Embedding model loaded successfully.")
 
     return _embedding_model
